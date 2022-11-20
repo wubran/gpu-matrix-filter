@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html style="padding:0;margin:0;background-color:white">
+	<style>
+		input{
+			/* width: 10vw; */
+			/* height: 5vh; */
+			text-align: center;
+			width:100%;
+			height:100%;
+		}
+		.matrixContainer{
+			margin: 20px;
+			display: grid;
+			grid-template-columns: 2vw 6vw 4vw 6vw 4vw 6vw 4vw 6vw 4vw 3vw;
+			grid-template-rows: 6vw 6vw 6vw 6vw;
+			gap: 1vw;
+		}
+		.matrixContainer > p{
+			font-size: 3vw;
+			text-align: center;
+			vertical-align:text-top;
+		}
+	</style>
+	<body id = "bodbod" style="padding:0;margin:0;">
+	<!-- <body id = "bodbod" style="padding:0;margin:0;overflow:hidden;"> -->
+		<div class="matrixContainer">
+
+			<div></div>
+			<div>
+				<input placeholder="1" type="text" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
+				<!-- <input type="range"></input> -->
+			</div>
+			<div></div>
+			<input placeholder="0" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
+			<div></div>
+			<input placeholder="0" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
+			<div></div>
+			<input placeholder="0" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
+			<div></div>
+			<p>r</p>
+
+			<p>r</p>
+			<input placeholder="0" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
+			<p> + g</p>
+			<input placeholder="1" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
+			<p> + b</p>
+			<input placeholder="0" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
+			<p> + a</p>
+			<input placeholder="0" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
+			<p>=</p>
+			<p>g</p>
+
+			<div></div>
+			<input placeholder="0" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
+			<div></div>
+			<input placeholder="0" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
+			<div></div>
+			<input placeholder="1" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
+			<div></div>
+			<input placeholder="0" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
+			<div></div>
+			<p>b</p>
+			<div></div>
+
+			<input placeholder="0" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
+			<div></div>
+			<input placeholder="0" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
+			<div></div>
+			<input placeholder="0" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
+			<div></div>
+			<input placeholder="1" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
+			<div></div>
+			<p>a</p>
+
+			<!-- <div class="gaming">gaming</div> -->
+		</div>
+		<canvas id="before"></canvas>
+		<canvas id="after"></canvas>
+		<div>drag image into yellow box^^</div>
+		<script 
+			src="https://unpkg.com/gpu.js@latest/dist/gpu-browser.min.js">
+		</script>
+		<script 
+			rc="https://cdn.jsdelivr.net/npm/gpu.js@latest/dist/gpu-browser.min.js">
+		</script>
+		<script>
+			var beforeCanvas = document.getElementById('before');
+			var afterCanvas = document.getElementById('after');
+			var ctx = beforeCanvas.getContext('2d');
+			ctx.willReadFrequently = true;
+			var afterCtx = afterCanvas.getContext("2d");
+
+			var initImage;
+			// canvasResize();
+	
+			//	  			 i = 0,1,2,3
+			let testMatrix = [[1,0,0,0],//r 255
+							[0,1,0,0],//g 255
+							[0,0,1,0],//b 255
+							[0,0,0,1]]//a 255
+
+			ctx.fillStyle = "khaki";
+			ctx.fillRect(0,0,beforeCanvas.width,beforeCanvas.height);
+			afterCtx.fillStyle = "orchid";
+			afterCtx.fillRect(0,0,beforeCanvas.width,beforeCanvas.height);
+
+			var inputs = document.getElementsByTagName("input");
+			for(let i=0; i<16; i++){
+				inputs[i].oninput = function() {
+					let intVal = parseFloat(this.value);
+        			testMatrix[i-((i>>2)<<2)][i>>2] = (isNaN(intVal))?0:intVal;
+					console.log(testMatrix)
+					updateImage()
+				}
+			}
+
+			;['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+				beforeCanvas.addEventListener(eventName, preventDefaults, false)
+			})
+
+			function preventDefaults (e) {
+			  e.preventDefault()
+			  e.stopPropagation()
+			}
+
+			beforeCanvas.addEventListener('drop', handleImage, false);
+			var bruh;
+			var temp = [];
+			var imda;
+
+			function handleImage(e){ //https://stackoverflow.com/questions/10906734/how-to-upload-image-into-html5-canvas
+				console.log("file dropped")
+				if(e.dataTransfer.files.length > 1){
+					console.log("one file only")
+					return;
+				}
+			  	let file = e.dataTransfer.files[0];
+
+				var reader = new FileReader();
+				// reader.readAsDataURL(file);
+				reader.readAsDataURL(file);
+
+				reader.onload = function(event){
+					var img = new Image();
+					img.onload = function(){
+						let width = Math.min(img.width, 0.4*window.innerWidth)
+						let height = img.height*width/img.width;
+
+						beforeCanvas.width = width;
+						afterCanvas.width = width;
+						beforeCanvas.height = height;
+						afterCanvas.height = height;
+						testkernel.setOutput([afterCanvas.width*afterCanvas.height]);
+						ctx.drawImage(img,0,0,width,height);
+						updateImage()
+					}
+					img.src = event.target.result;
+				}
+			}
+
+			function updateImage(){
+				initImage = ctx.getImageData(0, 0, beforeCanvas.width, beforeCanvas.height).data;
+				bruh = testkernel(beforeCanvas.width, beforeCanvas.height, initImage, testMatrix)
+				imda = afterCtx.createImageData(beforeCanvas.width, beforeCanvas.height);
+				for(let i=0; i<bruh.length; i++){
+					// temp.push(...(bruh[i]));
+					imda.data[i*4] = bruh[i][0];
+					imda.data[i*4+1] = bruh[i][1];
+					imda.data[i*4+2] = bruh[i][2];
+					imda.data[i*4+3] = bruh[i][3];
+				}
+				afterCtx.putImageData(imda,0,0);
+			}
+
+			const gpu = new GPU();
+			const testkernel = gpu.createKernel(function(imgW, imgH, imgDat, stdMatrix) {
+				let outMatrix = [0,0,0,0];
+				for(let i=0; i<4; i++){ 
+					// i represents the OUTPUT color being calculated --> i=0 is red output
+					// imgDat[this.thread.x + 0] = r --> multiply into [1,0,0,0]
+					// outMatrix[0] = r*rColumn[0] + g+gColumn[0]... 
+					outMatrix[i] = (imgDat[4*this.thread.x+0]*stdMatrix[0][i]+imgDat[4*this.thread.x+1]*stdMatrix[1][i]+imgDat[4*this.thread.x+2]*stdMatrix[2][i]+imgDat[4*this.thread.x+3]*stdMatrix[3][i]);
+				}
+				// outMatrix[0] = imgDat[4*this.thread.x+0];
+				// outMatrix[1] = imgDat[4*this.thread.x+1];
+				// outMatrix[2] = imgDat[4*this.thread.x+2];
+				// outMatrix[3] = imgDat[4*this.thread.x+3];
+
+				return outMatrix;
+			}).setOutput([beforeCanvas.width*beforeCanvas.height]).setDynamicOutput(true);
+
+
+			// window.onresize = canvasResize;
+			// function canvasResize(initialize) {
+			//   canvas.width  = window.innerWidth;
+			//   canvas.height = window.innerHeight;
+			// }
+		</script>
+	</body>
+</html>
