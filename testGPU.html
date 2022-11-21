@@ -150,9 +150,9 @@
 			for(let i=0; i<16; i++){
 				inputs[i].oninput = function() {
 					let intVal = parseFloat(this.value);
-        			testMatrix[i-((i>>2)<<2)][i>>2] = (isNaN(intVal))?parseInt(inputs[0].placeholder):intVal;
-					console.log(testMatrix)
-					updateImage()
+        			testMatrix[i-((i>>2)<<2)][i>>2] = (isNaN(intVal))?parseInt(inputs[1].placeholder):intVal;
+					// console.log(testMatrix);
+					updateImage();
 				}
 			}
 
