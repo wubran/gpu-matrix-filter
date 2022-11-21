@@ -11,83 +11,120 @@
 		.matrixContainer{
 			margin: 20px;
 			display: grid;
-			grid-template-columns: 2vw 6vw 4vw 6vw 4vw 6vw 4vw 6vw 4vw 3vw;
-			grid-template-rows: 6vw 6vw 6vw 6vw;
+			grid-template-columns: 2vw 3vw 4vw 3vw 4vw 3vw 4vw 3vw 4vw 1vw;
+			grid-template-rows: 2vw 2vw 2vw 2vw;
 			gap: 1vw;
 		}
-		.matrixContainer > p{
-			font-size: 3vw;
-			text-align: center;
-			vertical-align:text-top;
+		.matrixContainerContainer{
+			display: inline-block;
+			width:50%;
+			position:fixed;
+			top:0;
 		}
+		.canvas3d{
+			/* display: inline-block; */
+			display:block;
+			/* margin:auto; */
+			position:fixed;
+			right: 1vw;
+			margin-top:1vh;
+			width:50vw;
+			height:25vw;
+		}
+		.beforeCanvas{
+			position:fixed;
+			top: 26vw;
+			left:1vw;
+		}
+		.afterCanvas{
+			position:fixed;
+			top: 26vw;
+			right: 1vw;
+		}
+		.matrixContainer > p{
+			font-size: 2vw;
+			text-align: center;
+		}
+		.result{
+			margin:auto;
+		}
+		.extra{
+			font-size: 30px;
+			position:fixed;
+			bottom: 2vh;
+			left:2vw
+		}
+
 	</style>
 	<body id = "bodbod" style="padding:0;margin:0;">
 	<!-- <body id = "bodbod" style="padding:0;margin:0;overflow:hidden;"> -->
-		<div class="matrixContainer">
+		<div class="matrixContainerContainer">
+			<div class="matrixContainer">
+				<div></div>
+				<div>
+					<input placeholder="1" type="text" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
+					<!-- <input type="range"></input> -->
+				</div>
+				<div></div>
+				<input placeholder="0" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
+				<div></div>
+				<input placeholder="0" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
+				<div></div>
+				<input placeholder="0" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
+				<div></div>
+				<p class = "result">r</p>
 
-			<div></div>
-			<div>
-				<input placeholder="1" type="text" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
-				<!-- <input type="range"></input> -->
+				<p>r</p>
+				<input placeholder="0" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
+				<p> + g</p>
+				<input placeholder="1" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
+				<p> + b</p>
+				<input placeholder="0" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
+				<p> + a</p>
+				<input placeholder="0" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
+				<p>=</p>
+				<p class = "result">g</p>
+
+				<div></div>
+				<input placeholder="0" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
+				<div></div>
+				<input placeholder="0" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
+				<div></div>
+				<input placeholder="1" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
+				<div></div>
+				<input placeholder="0" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
+				<div></div>
+				<p class = "result">b</p>
+				<div></div>
+
+				<input placeholder="0" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
+				<div></div>
+				<input placeholder="0" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
+				<div></div>
+				<input placeholder="0" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
+				<div></div>
+				<input placeholder="1" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
+				<div></div>
+				<p class = "result">a</p>
+				<!-- <div class="gaming">gaming</div> -->
 			</div>
-			<div></div>
-			<input placeholder="0" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
-			<div></div>
-			<input placeholder="0" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
-			<div></div>
-			<input placeholder="0" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
-			<div></div>
-			<p>r</p>
-
-			<p>r</p>
-			<input placeholder="0" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
-			<p> + g</p>
-			<input placeholder="1" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
-			<p> + b</p>
-			<input placeholder="0" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
-			<p> + a</p>
-			<input placeholder="0" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
-			<p>=</p>
-			<p>g</p>
-
-			<div></div>
-			<input placeholder="0" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
-			<div></div>
-			<input placeholder="0" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
-			<div></div>
-			<input placeholder="1" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
-			<div></div>
-			<input placeholder="0" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
-			<div></div>
-			<p>b</p>
-			<div></div>
-
-			<input placeholder="0" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
-			<div></div>
-			<input placeholder="0" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
-			<div></div>
-			<input placeholder="0" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
-			<div></div>
-			<input placeholder="1" inputmode="numeric" pattern="\d*" max="10" min="-10" step="0.01"></input>
-			<div></div>
-			<p>a</p>
-
-			<!-- <div class="gaming">gaming</div> -->
 		</div>
-		<canvas id="before"></canvas>
-		<canvas id="after"></canvas>
-		<div>drag image into yellow box^^</div>
+		<canvas id="3d" class="canvas3d"></canvas>
+		<canvas id="before" class="beforeCanvas"></canvas>
+		<canvas id="after" class="afterCanvas"></canvas>
+		<div class="extra">drag image into yellow box^^</div>
 		<script 
 			src="https://unpkg.com/gpu.js@latest/dist/gpu-browser.min.js">
 		</script>
 		<script 
 			rc="https://cdn.jsdelivr.net/npm/gpu.js@latest/dist/gpu-browser.min.js">
 		</script>
+		<script type="text/javascript" src="campoint3d.js"></script>
 		<script>
 			var beforeCanvas = document.getElementById('before');
 			var afterCanvas = document.getElementById('after');
-			var ctx = beforeCanvas.getContext('2d');
-			ctx.willReadFrequently = true;
+			var beforeCtx = beforeCanvas.getContext('2d');
+			beforeCtx.willReadFrequently = true;
 			var afterCtx = afterCanvas.getContext("2d");
 
 			var initImage;
@@ -99,8 +136,8 @@
 							[0,0,1,0],//b 255
 							[0,0,0,1]]//a 255
 
-			ctx.fillStyle = "khaki";
-			ctx.fillRect(0,0,beforeCanvas.width,beforeCanvas.height);
+			beforeCtx.fillStyle = "khaki";
+			beforeCtx.fillRect(0,0,beforeCanvas.width,beforeCanvas.height);
 			afterCtx.fillStyle = "orchid";
 			afterCtx.fillRect(0,0,beforeCanvas.width,beforeCanvas.height);
 
@@ -108,8 +145,8 @@
 			for(let i=0; i<16; i++){
 				inputs[i].oninput = function() {
 					let intVal = parseFloat(this.value);
-        			testMatrix[i-((i>>2)<<2)][i>>2] = (isNaN(intVal))?0:intVal;
-					console.log(testMatrix)
+        			testMatrix[i-((i>>2)<<2)][i>>2] = (isNaN(intVal))?parseInt(inputs[0].placeholder):intVal;
+					// console.log(testMatrix)
 					updateImage()
 				}
 			}
@@ -151,7 +188,7 @@
 						beforeCanvas.height = height;
 						afterCanvas.height = height;
 						testkernel.setOutput([afterCanvas.width*afterCanvas.height]);
-						ctx.drawImage(img,0,0,width,height);
+						beforeCtx.drawImage(img,0,0,width,height);
 						updateImage()
 					}
 					img.src = event.target.result;
@@ -159,7 +196,7 @@
 			}
 
 			function updateImage(){
-				initImage = ctx.getImageData(0, 0, beforeCanvas.width, beforeCanvas.height).data;
+				initImage = beforeCtx.getImageData(0, 0, beforeCanvas.width, beforeCanvas.height).data;
 				bruh = testkernel(beforeCanvas.width, beforeCanvas.height, initImage, testMatrix)
 				imda = afterCtx.createImageData(beforeCanvas.width, beforeCanvas.height);
 				for(let i=0; i<bruh.length; i++){
@@ -195,6 +232,172 @@
 			//   canvas.width  = window.innerWidth;
 			//   canvas.height = window.innerHeight;
 			// }
+
+			//3D STARTS HERE!!!!!!!
+			canvas = document.getElementById('3d');
+			var ctx = canvas.getContext('2d');
+			canvas.width = canvas.offsetWidth;
+			canvas.height = canvas.offsetHeight;
+
+			var butt = -1; // 0 left, 1 middle, 2 right
+			var mouseX = 0;
+			var mouseY = 0;
+			var clickstart = [0,0];
+			var xcenter = canvas.width/2;
+  			var ycenter = canvas.height/2;
+			
+			const planetosize = 20; //increases distance of plane away from camera AND scales everything down
+			var bigness = 15/planetosize; // overall scale factor
+
+			var initcamdist = 50; // fov effects (becomes orthographic as approaches infinity)
+			var zoomfac = 1/Math.sqrt(initcamdist);
+			var camdistort = 50; // fov effects (becomes orthographic as approaches infinity)
+
+			camera = new Cam(39.33347860859019, 24.170967999528635, 19.20004600289643);
+
+			var originsize = canvas.width/70;
+			var originpoints = [];
+
+			originpoints = [];
+			originpoints.push(new Point(originsize,0,0,"rgba(255,120,120,0.5)"));
+			originpoints.push(new Point(0,originsize,0,"rgba(120,255,120,0.5)"));
+			originpoints.push(new Point(0,0,originsize,"rgba(120,120,255,0.5)"));
+			originpoints.push(new Point(-originsize,0,0,"rgba(255,120,120,0.5)"));
+			originpoints.push(new Point(0,-originsize,0,"rgba(120,255,120,0.5)"));
+			originpoints.push(new Point(0,0,-originsize,"rgba(120,120,255,0.5)"));
+
+			function draworigin(){
+				let names = ["+","+","+","-","-","-"];
+				i = 0;
+				for(let dot of originpoints){
+					dot.project(camera);
+					dot.draw(50*zoomfac);
+					ctx.lineWidth = 2;
+					ctx.strokeStyle = dot.color;
+					ctx.fillStyle = "white";
+					ctx.beginPath();
+					ctx.moveTo(xcenter,ycenter);
+					ctx.lineTo(dot.x, dot.y);
+					ctx.stroke();
+					ctx.font = "bold " + 100*zoomfac + "px Clear Sans";
+					ctx.textAlign = "center";
+					ctx.textBaseline = "middle";
+					ctx.shadowColor = "black";
+					ctx.shadowBlur = 4;
+					ctx.fillText(names[i], dot.x, dot.y);
+					ctx.shadowBlur = 0;
+					i++; //lazy to change the for loop
+				}
+			}
+			function refresh(){
+				//fillscreen();
+				// ctx.clearRect(0,0,canvas.width, canvas.height)
+				// ctx.fillStyle="black";
+				// ctx.fillRect(0,0,canvas.width,canvas.height);
+				camera.update();
+				// outline.draw();
+				draworigin();
+				// grid.draw();
+			}
+
+			document.oncontextmenu = function(e) { e.preventDefault(); e.stopPropagation(); }
+
+			canvas.addEventListener('mousedown', onClick);
+			canvas.addEventListener("mouseup", onRelease);
+			canvas.addEventListener('mouseleave', onMouseLeave);
+			canvas.addEventListener('mousemove', onMouseMove);
+
+			function preventDefaults (e) {
+			  e.preventDefault()
+			  e.stopPropagation()
+			}
+
+			function onClick(event){
+				//click = true;
+				butt = event.button;
+			}
+
+			function onRelease(event){
+				butt = -1;
+			}
+
+			function onMouseMove(event){
+        		//mousemoved = true;
+			  	mouseX = event.offsetX;
+			  	mouseY = event.offsetY;
+				if(butt == 2){
+					let diffx = clickstart[0] - (xcenter-mouseX);
+					let diffy = clickstart[1] - (ycenter-mouseY);
+					camera.orbit(-20*diffx/(1000), 20*diffy/(1000));
+				}
+				clickstart = [xcenter-mouseX,ycenter-mouseY]; //must use center because cavnas corners move when resizing
+			}
+
+			function onMouseLeave(event){
+				butt = -1;
+			}
+
+			function transform(vect, useA){ //uses the testmatrix
+				let outMatrix = [0,0,0];
+				if(useA){
+					outMatrix.push(0);
+				}
+				for(let i=0; i<outMatrix.length; i++){ 
+					outMatrix[i] = (vect[0]*testMatrix[0][i]+vect[1]*testMatrix[1][i]+vect[2]*testMatrix[2][i]+((useA)?(vect[3]*testMatrix[3][i]):0));
+				}
+				return outMatrix;
+			}
+
+			let u = originsize/3;
+			let vects = 4;
+			let vectsm1 = vects-1;
+			let rgbPoints = [];
+			let transPoints = [];
+			for(let i=0; i<vects; i++){
+				for(let j=0; j<vects; j++){
+					for(let k=0; k<vects; k++){
+						rgbPoints.push(new Point(i*u/vectsm1, j*u/vectsm1, k*u/vectsm1, "rgba("+255*i+","+255*j+","+255*k+","+0.4+")"))
+					}
+				}
+			}
+			for(let i=0; i<vects; i++){
+				for(let j=0; j<vects; j++){
+					for(let k=0; k<vects; k++){
+						transPoints.push(new Point(i*u/vectsm1, j*u/vectsm1, k*u/vectsm1, "rgba("+255*i+","+255*j+","+255*k+","+0.4+")"))
+					}
+				}
+			}
+			function drawVects(points){
+				i = 0;
+				for(let dot of points){
+					dot.project(camera);
+					dot.draw(20*zoomfac);
+					ctx.lineWidth = 1;
+					ctx.strokeStyle = dot.color;
+					ctx.fillStyle = "white";
+					ctx.beginPath();
+					ctx.moveTo(xcenter,ycenter);
+					ctx.lineTo(dot.x, dot.y);
+					ctx.stroke();
+					i++; //lazy to change the for loop
+				}
+			}
+			setInterval(function(){ //the big loop
+				ctx.fillStyle="black";
+				ctx.fillRect(0,0,canvas.width,canvas.height);
+				xcenter = canvas.width/4;
+				refresh();
+				drawVects(rgbPoints);
+				xcenter = 3*canvas.width/4; //this is dumb and slow but im lazy
+				refresh();
+				for(let i=0; i<rgbPoints.length; i++){
+					transPoints[i].pos = transform(rgbPoints[i].pos, false);
+					transPoints[i].color = "rgba("+(255*transPoints[i].pos[0])+","+255*(255*transPoints[i].pos[1])+","+255*(255*transPoints[i].pos[2])+","+0.4+")";
+				}
+				drawVects(transPoints);
+				// draworigin();
+			}, 1000/60);
+  
 		</script>
 	</body>
 </html>
