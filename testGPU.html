@@ -48,7 +48,7 @@
 		.result{
 			margin:auto;
 		}
-		.extra{
+		.notesContainer{
 			font-size: 30px;
 			position:fixed;
 			bottom: 2vh;
@@ -112,7 +112,12 @@
 		<canvas id="3d" class="canvas3d"></canvas>
 		<canvas id="before" class="beforeCanvas"></canvas>
 		<canvas id="after" class="afterCanvas"></canvas>
-		<div class="extra">drag image into yellow box^^</div>
+		<div class="notesContainer">
+			<div class="notes">BEFORE ENTERING VALUES, drag a colorful image into the yellow box</div>
+			<div class="notes">transform rgba vectors using matrix UI</div>
+			<div class="notes">"a" vector (opacity) is not shown in 3d</div>
+		</div>
+
 		<script 
 			src="https://unpkg.com/gpu.js@latest/dist/gpu-browser.min.js">
 		</script>
@@ -146,7 +151,7 @@
 				inputs[i].oninput = function() {
 					let intVal = parseFloat(this.value);
         			testMatrix[i-((i>>2)<<2)][i>>2] = (isNaN(intVal))?parseInt(inputs[0].placeholder):intVal;
-					// console.log(testMatrix)
+					console.log(testMatrix)
 					updateImage()
 				}
 			}
