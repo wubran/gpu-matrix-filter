@@ -115,7 +115,6 @@
 		<div class="notesContainer">
 			<div class="notes">BEFORE ENTERING VALUES, drag a colorful image into the yellow box</div>
 			<div class="notes">transform rgba vectors using matrix UI</div>
-			<div class="notes">"a" vector (opacity) is not shown in 3d</div>
 		</div>
 
 		<script 
@@ -128,10 +127,8 @@
 		<script>
 			var beforeCanvas = document.getElementById('before');
 			var afterCanvas = document.getElementById('after');
-			var beforeCtx = beforeCanvas.getContext('2d');
-			beforeCtx.willReadFrequently = true;
+			var beforeCtx = beforeCanvas.getContext('2d',{willReadFrequently:true});
 			var afterCtx = afterCanvas.getContext("2d");
-
 			var initImage;
 			// canvasResize();
 	
@@ -152,6 +149,7 @@
 					let intVal = parseFloat(this.value);
         			testMatrix[i-((i>>2)<<2)][i>>2] = (isNaN(intVal))?parseInt(inputs[1].placeholder):intVal;
 					// console.log(testMatrix);
+					do3Dcanvases();
 					updateImage();
 				}
 			}
@@ -185,14 +183,14 @@
 				reader.onload = function(event){
 					var img = new Image();
 					img.onload = function(){
-						let width = Math.min(img.width, 0.4*window.innerWidth)
+						let width = Math.min(img.width, 0.48*window.innerWidth) // error introduced somewhere around here
 						let height = img.height*width/img.width;
 
 						beforeCanvas.width = width;
 						afterCanvas.width = width;
 						beforeCanvas.height = height;
 						afterCanvas.height = height;
-						testkernel.setOutput([afterCanvas.width*afterCanvas.height]);
+						testkernel.setOutput([width*height]);
 						beforeCtx.drawImage(img,0,0,width,height);
 						updateImage()
 					}
@@ -202,15 +200,17 @@
 
 			function updateImage(){
 				initImage = beforeCtx.getImageData(0, 0, beforeCanvas.width, beforeCanvas.height).data;
+				// console.log(beforeCanvas.width, beforeCanvas.height, initImage.length, testkernel.output)
 				bruh = testkernel(beforeCanvas.width, beforeCanvas.height, initImage, testMatrix)
 				imda = afterCtx.createImageData(beforeCanvas.width, beforeCanvas.height);
-				for(let i=0; i<bruh.length; i++){
+				for(let i=0; i<bruh.length; i++){ // flattener
 					// temp.push(...(bruh[i]));
 					imda.data[i*4] = bruh[i][0];
 					imda.data[i*4+1] = bruh[i][1];
 					imda.data[i*4+2] = bruh[i][2];
 					imda.data[i*4+3] = bruh[i][3];
 				}
+				// console.log(initImage.length, bruh.length, imda.data.length, testkernel.output)
 				afterCtx.putImageData(imda,0,0);
 			}
 
@@ -223,13 +223,8 @@
 					// outMatrix[0] = r*rColumn[0] + g+gColumn[0]... 
 					outMatrix[i] = (imgDat[4*this.thread.x+0]*stdMatrix[0][i]+imgDat[4*this.thread.x+1]*stdMatrix[1][i]+imgDat[4*this.thread.x+2]*stdMatrix[2][i]+imgDat[4*this.thread.x+3]*stdMatrix[3][i]);
 				}
-				// outMatrix[0] = imgDat[4*this.thread.x+0];
-				// outMatrix[1] = imgDat[4*this.thread.x+1];
-				// outMatrix[2] = imgDat[4*this.thread.x+2];
-				// outMatrix[3] = imgDat[4*this.thread.x+3];
-
 				return outMatrix;
-			}).setOutput([beforeCanvas.width*beforeCanvas.height]).setDynamicOutput(true);
+			}).setOutput([beforeCanvas.width*beforeCanvas.height]).setDynamicOutput(true).setDynamicArguments(true);
 
 
 			// window.onresize = canvasResize;
@@ -305,7 +300,7 @@
 				// grid.draw();
 			}
 
-			document.oncontextmenu = function(e) { e.preventDefault(); e.stopPropagation(); }
+			canvas.oncontextmenu = function(e) { e.preventDefault(); e.stopPropagation(); }
 
 			canvas.addEventListener('mousedown', onClick);
 			canvas.addEventListener("mouseup", onRelease);
@@ -355,52 +350,81 @@
 
 			let u = originsize/3;
 			let vects = 4;
+			u = originsize/2;
+			vects = 8;
+			let maxA = 0.6;
+			let colorC = 50;
+			let vectorLines = false;
+			let pointRad = 16*zoomfac;
 			let vectsm1 = vects-1;
 			let rgbPoints = [];
 			let transPoints = [];
 			for(let i=0; i<vects; i++){
 				for(let j=0; j<vects; j++){
 					for(let k=0; k<vects; k++){
-						rgbPoints.push(new Point(i*u/vectsm1, j*u/vectsm1, k*u/vectsm1, "rgba("+255*i+","+255*j+","+255*k+","+0.4+")"))
+						rgbPoints.push(new Point(i*u/vectsm1, j*u/vectsm1, k*u/vectsm1, makeColor(i/vectsm1,j/vectsm1,k/vectsm1,maxA,colorC)))
 					}
 				}
 			}
 			for(let i=0; i<vects; i++){
 				for(let j=0; j<vects; j++){
 					for(let k=0; k<vects; k++){
-						transPoints.push(new Point(i*u/vectsm1, j*u/vectsm1, k*u/vectsm1, "rgba("+255*i+","+255*j+","+255*k+","+0.4+")"))
+						transPoints.push(new Point(i*u/vectsm1, j*u/vectsm1, k*u/vectsm1, makeColor(i/vectsm1,j/vectsm1,k/vectsm1,maxA,colorC)))
 					}
 				}
 			}
+
+			function makeColor(r,g,b,a,c){ // r,g,b,a are 0-1, while c is 0-255
+				return "rgba("+((255-c)*r+c)+","+((255-c)*g+c)+","+((255-c)*b+c)+","+a+")";
+			}
+
 			function drawVects(points){
 				i = 0;
 				for(let dot of points){
 					dot.project(camera);
-					dot.draw(20*zoomfac);
-					ctx.lineWidth = 1;
-					ctx.strokeStyle = dot.color;
-					ctx.fillStyle = "white";
-					ctx.beginPath();
-					ctx.moveTo(xcenter,ycenter);
-					ctx.lineTo(dot.x, dot.y);
-					ctx.stroke();
+					dot.draw(pointRad);
+					if(vectorLines){
+						ctx.lineWidth = 1;
+						ctx.strokeStyle = dot.color;
+						ctx.fillStyle = "white";
+						ctx.beginPath();
+						ctx.moveTo(xcenter,ycenter);
+						ctx.lineTo(dot.x, dot.y);
+						ctx.stroke();
+					}
 					i++; //lazy to change the for loop
 				}
 			}
-			setInterval(function(){ //the big loop
+			function addA(vect3D){
+				let temp = vect3D;
+				temp.push(u);
+				return temp;
+			}
+			function do3Dcanvases(){
 				ctx.fillStyle="black";
 				ctx.fillRect(0,0,canvas.width,canvas.height);
 				xcenter = canvas.width/4;
-				refresh();
+				camera.update();
+				draworigin();
 				drawVects(rgbPoints);
 				xcenter = 3*canvas.width/4; //this is dumb and slow but im lazy
-				refresh();
+				draworigin();
 				for(let i=0; i<rgbPoints.length; i++){
-					transPoints[i].pos = transform(rgbPoints[i].pos, false);
-					transPoints[i].color = "rgba("+(255*transPoints[i].pos[0])+","+255*(255*transPoints[i].pos[1])+","+255*(255*transPoints[i].pos[2])+","+0.4+")";
+					// transPoints[i].pos = transform(rgbPoints[i].pos, false);
+					let newPos = transform(addA(rgbPoints[i].pos), true);
+					let a = newPos.pop(3);
+					// console.log(a)
+					transPoints[i].pos = newPos;
+					transPoints[i].color = makeColor(transPoints[i].pos[0]/u,transPoints[i].pos[1]/u,transPoints[i].pos[2]/u,maxA*Math.min(a/u,1),colorC);
 				}
 				drawVects(transPoints);
 				// draworigin();
+			}
+			do3Dcanvases();
+			setInterval(function(){ //the big loop
+				if(butt==2){
+					do3Dcanvases();
+				}
 			}, 1000/60);
   
 		</script>
