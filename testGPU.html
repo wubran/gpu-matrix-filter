@@ -48,13 +48,10 @@
 		.result{
 			margin:auto;
 		}
-		.notesContainer{
-			font-size: 30px;
-			position:fixed;
-			bottom: 2vh;
-			left:2vw
+		.notes{
+			margin: 0.2vw 2vw;
+			font-size: 1.4vw;
 		}
-
 	</style>
 	<body id = "bodbod" style="padding:0;margin:0;">
 	<!-- <body id = "bodbod" style="padding:0;margin:0;overflow:hidden;"> -->
@@ -108,15 +105,14 @@
 				<p class = "result">a</p>
 				<!-- <div class="gaming">gaming</div> -->
 			</div>
+			<p class="notes">drag a colorful image into the yellow box</p>
+			<p class="notes">multiply 4x4 matrix by "rgba" vectors (left) to get new rgba vectors (right)</p>
+			<p class="notes">3d models show change in span or color space (left is old, right is new)</p>
+			<p class="notes">right click to interact with 3d displays</p>
 		</div>
 		<canvas id="3d" class="canvas3d"></canvas>
 		<canvas id="before" class="beforeCanvas"></canvas>
 		<canvas id="after" class="afterCanvas"></canvas>
-		<div class="notesContainer">
-			<div class="notes">BEFORE ENTERING VALUES, drag a colorful image into the yellow box</div>
-			<div class="notes">transform rgba vectors using matrix UI</div>
-		</div>
-
 		<script 
 			src="https://unpkg.com/gpu.js@latest/dist/gpu-browser.min.js">
 		</script>
@@ -192,6 +188,7 @@
 						afterCanvas.height = height;
 						testkernel.setOutput([width*height]);
 						beforeCtx.drawImage(img,0,0,width,height);
+						initImage = beforeCtx.getImageData(0, 0, beforeCanvas.width, beforeCanvas.height).data;
 						updateImage()
 					}
 					img.src = event.target.result;
@@ -199,7 +196,6 @@
 			}
 
 			function updateImage(){
-				initImage = beforeCtx.getImageData(0, 0, beforeCanvas.width, beforeCanvas.height).data;
 				// console.log(beforeCanvas.width, beforeCanvas.height, initImage.length, testkernel.output)
 				bruh = testkernel(beforeCanvas.width, beforeCanvas.height, initImage, testMatrix)
 				imda = afterCtx.createImageData(beforeCanvas.width, beforeCanvas.height);
