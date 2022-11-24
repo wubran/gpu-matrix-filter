@@ -52,6 +52,9 @@
 			margin: 0.2vw 2vw;
 			font-size: 1.4vw;
 		}
+		#randButton{
+			margin-left: 2vw;
+		}
 	</style>
 	<body id = "bodbod" style="padding:0;margin:0;">
 	<!-- <body id = "bodbod" style="padding:0;margin:0;overflow:hidden;"> -->
@@ -105,6 +108,7 @@
 				<p class = "result">a</p>
 				<!-- <div class="gaming">gaming</div> -->
 			</div>
+			<button id="randButton">randomize!</button>
 			<p class="notes">drag a colorful image into the yellow box</p>
 			<p class="notes">multiply 4x4 matrix by "rgba" vectors (left) to get new rgba vectors (right)</p>
 			<p class="notes">3d models show change in span or color space (left is old, right is new)</p>
@@ -125,7 +129,6 @@
 			var afterCanvas = document.getElementById('after');
 			var beforeCtx = beforeCanvas.getContext('2d',{willReadFrequently:true});
 			var afterCtx = afterCanvas.getContext("2d");
-			var initImage;
 			// canvasResize();
 	
 			//	  			 i = 0,1,2,3
@@ -136,6 +139,8 @@
 
 			beforeCtx.fillStyle = "khaki";
 			beforeCtx.fillRect(0,0,beforeCanvas.width,beforeCanvas.height);
+			var initImage = beforeCtx.getImageData(0, 0, beforeCanvas.width, beforeCanvas.height).data;
+
 			afterCtx.fillStyle = "orchid";
 			afterCtx.fillRect(0,0,beforeCanvas.width,beforeCanvas.height);
 
@@ -148,6 +153,23 @@
 					do3Dcanvases();
 					updateImage();
 				}
+			}
+			var randButton = document.getElementById("randButton");
+			randButton.onclick = function(){
+				for(i=0; i<4; i++){
+					for(j=0; j<4; j++){
+						if(i==3||j==3){
+							continue; //might put something later for random transparency
+						}
+						// let randVal = (2*(Math.random()**2)-0.66);
+						let randVal = 2*(Math.exp(0-(2*Math.random())**2)-0.3); //idk
+						inputs[i+4*j].value = randVal;
+						testMatrix[j][i] = randVal;
+					}
+				}
+				console.log(testMatrix);
+				do3Dcanvases();
+				updateImage();
 			}
 
 			;['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
